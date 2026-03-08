@@ -1,310 +1,784 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi Cậu 8/3 ✨</title>
-    <style>
-        :root {
-            --pink-dark: #ff1493;
-            --pink-light: #ffb6c1;
-            --card-bg: #fffafa;
-        }
 
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<meta charset="UTF-8">
 
-        #bgCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* 1. Màn hình bắt đầu */
-        #start-screen {
-            position: relative;
-            z-index: 1000;
-            text-align: center;
-        }
-        .btn-start {
-            padding: 15px 35px;
-            background: rgba(255, 182, 193, 0.2);
-            border: 2px solid var(--pink-light);
-            color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
+<title>Gửi Cậu 8/3 ✨</title>
 
-        #text-sequence {
-            display: none;
-            position: relative;
-            z-index: 500;
-            font-size: 1.5rem;
-            text-align: center;
-            max-width: 80%;
-            color: var(--pink-light);
-            text-shadow: 0 0 10px var(--pink-dark);
-        }
+<style>
 
-        /* 2. Ảnh trôi ngẫu nhiên */
-        #photo-float-container {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 5;
-            pointer-events: none;
-        }
-        .floating-img {
-            position: absolute;
-            width: 150px;
-            border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.3);
-            opacity: 0.4;
-            animation: floatDown linear infinite;
-        }
-        @keyframes floatDown {
-            from { transform: translateY(-110vh) rotate(var(--rot)); }
-            to { transform: translateY(110vh) rotate(var(--rot)); }
-        }
+:root {
 
-        /* 3. HIỆU ỨNG THIỆP/QUYỂN VỞ */
-        #main-content {
-            display: none;
-            position: relative;
-            z-index: 1000;
-            perspective: 1500px;
-        }
+--pink-dark: #d4145a;
 
-        .book {
-            position: relative;
-            width: 280px;
-            height: 380px;
-            transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.15, 0.45, 0.3, 1);
-        }
+--pink-main: #ff1493;
 
-        /* Tờ bìa (Mặt trước) */
-        .cover {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--pink-dark);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0 15px 15px 0; /* Bo góc bên phải */
-            box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
-            transform-origin: left; /* Quay quanh trục bên trái */
-            transition: transform 1s ease;
-            z-index: 10;
-            cursor: pointer;
-            border-left: 3px solid rgba(0,0,0,0.2); /* Tạo gáy vở */
-        }
+--pink-light: #ffb6c1;
 
-        /* Trang bên trong */
-        .page-inside {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--card-bg);
-            border-radius: 0 15px 15px 0;
-            padding: 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 5;
-            color: #333;
-            box-shadow: inset 5px 0 10px rgba(0,0,0,0.1);
-        }
+--gold: #ffd700;
 
-        /* Trạng thái khi mở vở */
-        .book.open .cover {
-            transform: rotateY(-160deg);
-        }
+--card-bg: #fff5f7;
 
-        .cover h2 { margin: 10px 0; font-size: 1.4rem; }
-        .heart-icon { font-size: 4rem; animation: beat 1s infinite; }
+}
 
-        #typing-text { font-size: 1.1rem; line-height: 1.6; color: #444; }
 
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
 
-        #typing-text::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
+body, html {
 
-        .hint {
-            position: absolute;
-            bottom: -60px;
-            width: 100%;
-            text-align: center;
-            color: var(--pink-light);
-            font-size: 0.9rem;
-        }
+margin: 0; padding: 0;
 
-        .fade-in { animation: fadeIn 0.8s forwards; }
-        .fade-out { animation: fadeOut 0.8s forwards; }
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-        @keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
-    </style>
+width: 100%; height: 100%;
+
+background: #0f0c29;
+
+background: #000;
+
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+overflow: hidden;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+}
+
+
+
+#bgCanvas {
+
+position: fixed;
+
+top: 0; left: 0;
+
+z-index: 1;
+
+pointer-events: none;
+
+}
+
+
+
+/* 1. Màn hình bắt đầu */
+
+#start-screen {
+
+position: relative;
+
+z-index: 1000;
+
+text-align: center;
+
+}
+
+.btn-start {
+
+padding: 18px 40px;
+
+background: linear-gradient(45deg, var(--pink-dark), var(--pink-main));
+
+border: none;
+
+color: white;
+
+border-radius: 50px;
+
+cursor: pointer;
+
+font-size: 1.3rem;
+
+font-weight: bold;
+
+box-shadow: 0 10px 20px rgba(255, 20, 147, 0.4);
+
+transition: 0.3s;
+
+}
+
+.btn-start:hover {
+
+transform: scale(1.1);
+
+box-shadow: 0 15px 30px rgba(255, 20, 147, 0.6);
+
+}
+
+
+
+#text-sequence {
+
+display: none;
+
+position: relative;
+
+z-index: 500;
+
+font-size: 1.8rem;
+
+text-align: center;
+
+color: white;
+
+text-shadow: 0 0 15px var(--pink-main);
+
+font-style: italic;
+
+}
+
+
+
+/* 2. Ảnh trôi ngẫu nhiên */
+
+#photo-float-container {
+
+display: none;
+
+position: fixed;
+
+top: 0; left: 0;
+
+width: 100%; height: 100%;
+
+z-index: 5;
+
+pointer-events: none;
+
+}
+
+.floating-img {
+
+position: absolute;
+
+width: 200px;
+
+border-radius: 15px;
+
+border: 3px solid white;
+
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+opacity: 0.6;
+
+animation: floatDown linear infinite;
+
+}
+
+@keyframes floatDown {
+
+from { transform: translateY(-110vh) rotate(var(--rot)); }
+
+to { transform: translateY(110vh) rotate(var(--rot)); }
+
+}
+
+
+
+/* 3. HIỆU ỨNG THIỆP 3D */
+
+#main-content {
+
+display: none;
+
+position: relative;
+
+z-index: 1000;
+
+perspective: 2000px;
+
+}
+
+
+
+.book {
+
+position: relative;
+
+width: 320px;
+
+height: 450px;
+
+transform-style: preserve-3d;
+
+transition: transform 1.2s cubic-bezier(0.15, 0.45, 0.3, 1);
+
+}
+
+
+
+/* Tờ bìa */
+
+.cover {
+
+position: absolute;
+
+width: 100%;
+
+height: 100%;
+
+background: linear-gradient(135deg, var(--pink-dark) 0%, var(--pink-main) 100%);
+
+border-radius: 5px 15px 15px 5px;
+
+box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+
+transform-origin: left;
+
+z-index: 10;
+
+cursor: pointer;
+
+display: flex;
+
+flex-direction: column;
+
+justify-content: center;
+
+align-items: center;
+
+border-left: 5px solid rgba(0,0,0,0.3);
+
+transition: transform 1s;
+
+backface-visibility: hidden;
+
+}
+
+
+
+/* Trang trí bìa */
+
+.cover::before { /* Dải ruy băng */
+
+content: '';
+
+position: absolute;
+
+left: 40px; top: 0;
+
+width: 30px; height: 100%;
+
+background: rgba(255, 255, 255, 0.2);
+
+}
+
+
+
+.cover-content {
+
+color: white;
+
+text-align: center;
+
+padding: 20px;
+
+border: 2px solid rgba(255,255,255,0.4);
+
+margin: 20px;
+
+background: rgba(0,0,0,0.1);
+
+}
+
+
+
+/* Trang bên trong */
+
+.page-inside {
+
+position: absolute;
+
+width: 100%;
+
+height: 100%;
+
+background: var(--card-bg);
+
+background-image: radial-gradient(#ffb6c1 0.5px, transparent 0.5px);
+
+background-size: 20px 20px; /* Họa tiết hoa nhí/chấm bi nhẹ */
+
+border-radius: 0 15px 15px 0;
+
+padding: 40px 30px;
+
+box-sizing: border-box;
+
+display: flex;
+
+flex-direction: column;
+
+z-index: 5;
+
+box-shadow: inset 10px 0 20px rgba(0,0,0,0.1);
+
+}
+
+
+
+.book.open .cover {
+
+transform: rotateY(-150deg);
+
+}
+
+
+
+.heart-icon { font-size: 4.5rem; filter: drop-shadow(0 0 10px white); animation: beat 1.2s infinite; }
+
+
+
+#typing-text {
+
+font-size: 1.15rem;
+
+line-height: 1.8;
+
+color: #444;
+
+font-weight: 500;
+
+text-align: justify;
+
+}
+
+
+
+@keyframes beat {
+
+0%, 100% { transform: scale(1); }
+
+50% { transform: scale(1.1); }
+
+}
+
+
+
+.hint {
+
+position: absolute;
+
+bottom: -50px;
+
+width: 100%;
+
+text-align: center;
+
+color: white;
+
+font-weight: 300;
+
+letter-spacing: 1px;
+
+opacity: 0.8;
+
+}
+
+
+
+.fade-in { animation: fadeIn 0.8s forwards; }
+
+.fade-out { animation: fadeOut 0.8s forwards; }
+
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+@keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
+
+
+
+/* Tim bay ra khi mở thiệp */
+
+.confetti {
+
+position: absolute;
+
+z-index: 1001;
+
+pointer-events: none;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <canvas id="bgCanvas"></canvas>
 
-    <div id="start-screen">
-        <button class="btn-start" onclick="startExperience()">Mở quà ngay 🎀</button>
-    </div>
 
-    <div id="text-sequence"></div>
+<canvas id="bgCanvas"></canvas>
 
-    <div id="photo-float-container"></div>
 
-    <div id="main-content">
-        <div class="book" id="myBook">
-            <div class="cover" onclick="openBook()">
-                <div class="heart-icon">❤️</div>
-                <h2>Gửi Cậu...</h2>
-                <small>Chạm để mở quyển vở nhỏ</small>
-            </div>
-            <div class="page-inside" onclick="openBook()">
-                <h2 style="color: var(--pink-dark); margin-top: 0;">Happy 8/3!</h2>
-                <div id="typing-text"></div>
-            </div>
-        </div>
-        <div class="hint">Bấm vào bìa để lật trang nhé</div>
-    </div>
 
-    <script>
-        const phrases = [
-            "Chào bạn nữ xinh xắn...",
-            "Nhân ngày Quốc tế Phụ nữ 8/3",
-            "Tớ có một điều bất ngờ nhỏ...",
-            "Dành riêng cho cậu thôi đấy!",
-            "Sẵn sàng chưa nào? ✨"
-        ];
+<div id="start-screen">
 
-        const fullMessage = "Chúc cậu một ngày 8/3 thật hạnh phúc, luôn rạng rỡ như ánh mặt trời và gặp thật nhiều may mắn trong cuộc sống nhé! Cậu xứng đáng với những điều tốt đẹp nhất. ❤️";
+<button class="btn-start" onclick="startExperience()">Bấm vào đây để có bất ngờ ❤️❤️❤️</button>
 
-        const myImages = [
-            'https://picsum.photos/300/400?random=1',
-            'https://picsum.photos/300/400?random=2',
-            'https://picsum.photos/300/400?random=3',
-            'https://picsum.photos/300/400?random=4',
-            'https://picsum.photos/300/400?random=5'
-        ];
+</div>
 
-        let currentPhrase = 0;
-        let typingStarted = false;
 
-        function startExperience() {
-            document.getElementById('start-screen').style.display = 'none';
-            const textEl = document.getElementById('text-sequence');
-            textEl.style.display = 'block';
-            runTextSequence();
-        }
 
-        function runTextSequence() {
-            const textEl = document.getElementById('text-sequence');
-            if (currentPhrase < phrases.length) {
-                textEl.innerText = phrases[currentPhrase];
-                textEl.className = 'fade-in';
-                setTimeout(() => {
-                    textEl.className = 'fade-out';
-                    setTimeout(() => {
-                        currentPhrase++;
-                        runTextSequence();
-                    }, 800);
-                }, 2200);
-            } else {
-                textEl.style.display = 'none';
-                showMainContent();
-            }
-        }
+<div id="text-sequence"></div>
 
-        function showMainContent() {
-            document.getElementById('photo-float-container').style.display = 'block';
-            document.getElementById('main-content').style.display = 'flex';
-            createFloatingImages();
-        }
 
-        function createFloatingImages() {
-            const container = document.getElementById('photo-float-container');
-            for (let i = 0; i < 20; i++) {
-                const img = document.createElement('img');
-                img.src = myImages[i % myImages.length];
-                img.className = 'floating-img';
-                img.style.left = Math.random() * 85 + '%';
-                img.style.animationDuration = (15 + Math.random() * 15) + 's';
-                img.style.animationDelay = (Math.random() * -30) + 's';
-                img.style.setProperty('--rot', (Math.random() - 0.5) * 40 + 'deg');
-                container.appendChild(img);
-            }
-        }
 
-        function openBook() {
-            const book = document.getElementById('myBook');
-            book.classList.toggle('open');
-            
-            if (book.classList.contains('open') && !typingStarted) {
-                typingStarted = true;
-                setTimeout(() => {
-                    typeWriter(fullMessage, 0);
-                }, 800);
-            }
-        }
+<div id="photo-float-container"></div>
 
-        function typeWriter(text, i) {
-            if (i < text.length) {
-                document.getElementById("typing-text").innerHTML = text.substring(0, i + 1);
-                setTimeout(() => typeWriter(text, i + 1), 60);
-            }
-        }
 
-        // Sao nền
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        function initStars() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<80; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2, v: 0.3});
-        }
-        function drawStars() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "white";
-            stars.forEach(s => {
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, Math.PI*2); ctx.fill();
-                s.y += s.v; if(s.y > canvas.height) s.y = 0;
-            });
-            requestAnimationFrame(drawStars);
-        }
-        window.onload = () => { initStars(); drawStars(); };
-        window.onresize = initStars;
-    </script>
+
+<div id="main-content">
+
+<div class="book" id="myBook">
+
+<div class="cover" onclick="openBook()">
+
+<div class="cover-content">
+
+<div class="heart-icon">💝</div>
+
+<h2 style="margin: 15px 0 5px;">Gửi Cậu...</h2>
+
+<p style="font-size: 0.9rem; opacity: 0.9;">Phụ nữ là để yêu thương</p>
+
+</div>
+
+<small style="position: absolute; bottom: 30px; color: var(--gold);">Chạm để mở thiệp ✨</small>
+
+</div>
+
+<div class="page-inside">
+
+<h2 style="color: var(--pink-dark); margin-top: 0; text-align: center; font-family: 'Dancing Script', cursive;">Happy Women's Day!</h2>
+
+<hr style="width: 50%; border: 0.5px solid var(--pink-light); margin-bottom: 20px;">
+
+<div id="typing-text"></div>
+
+<div style="margin-top: auto; text-align: right; color: var(--pink-dark); font-weight: bold;">
+
+- From Me with Love -
+
+</div>
+
+</div>
+
+</div>
+
+<div class="hint">Bấm vào thiệp để xem nội dung bên trong</div>
+
+</div>
+
+
+
+<script>
+
+const phrases = [
+
+"Chào bạn nữ xinh xắn nhất tớ biết...",
+
+"Nay là một ngày rất đặc biệt đấy",
+
+"Tớ có một điều bất ngờ nhỏ...",
+
+"Dành riêng cho cậu!!! ✨",
+
+"3... 2... 1..."
+
+];
+
+
+
+const fullMessage = "Chúc cậu một ngày 8/3 thật hạnh phúc, luôn rạng rỡ như ánh mặt trời và gặp thật nhiều may mắn trong cuộc sống. Cậu là một cô gái tuyệt vời và xứng đáng với tất cả những điều ngọt ngào nhất thế giới này! ❤️";
+
+
+
+const myImages = [
+
+'https://flowersight.com/hoa-mau-hong-dam/300/40?random=1',
+
+'https://picsum.photos/300/400?random=2',
+
+'https://picsum.photos/300/400?random=3',
+
+'https://picsum.photos/300/400?random=4'
+
+];
+
+
+
+let currentPhrase = 0;
+
+let typingStarted = false;
+
+
+
+function startExperience() {
+
+document.getElementById('start-screen').style.display = 'none';
+
+const textEl = document.getElementById('text-sequence');
+
+textEl.style.display = 'block';
+
+runTextSequence();
+
+}
+
+
+
+function runTextSequence() {
+
+const textEl = document.getElementById('text-sequence');
+
+if (currentPhrase < phrases.length) {
+
+textEl.innerText = phrases[currentPhrase];
+
+textEl.className = 'fade-in';
+
+setTimeout(() => {
+
+textEl.className = 'fade-out';
+
+setTimeout(() => {
+
+currentPhrase++;
+
+runTextSequence();
+
+}, 800);
+
+}, 2000);
+
+} else {
+
+textEl.style.display = 'none';
+
+showMainContent();
+
+}
+
+}
+
+
+
+function showMainContent() {
+
+document.getElementById('photo-float-container').style.display = 'block';
+
+document.getElementById('main-content').style.display = 'flex';
+
+createFloatingImages();
+
+}
+
+
+
+function createFloatingImages() {
+
+const container = document.getElementById('photo-float-container');
+
+for (let i = 0; i < 15; i++) {
+
+const img = document.createElement('img');
+
+img.src = myImages[i % myImages.length];
+
+img.className = 'floating-img';
+
+img.style.left = Math.random() * 90 + '%';
+
+img.style.animationDuration = (10 + Math.random() * 10) + 's';
+
+img.style.animationDelay = (Math.random() * -20) + 's';
+
+img.style.setProperty('--rot', (Math.random() - 0.5) * 60 + 'deg');
+
+container.appendChild(img);
+
+}
+
+}
+
+
+
+function createConfetti() {
+
+for(let i=0; i<30; i++) {
+
+const heart = document.createElement('div');
+
+heart.innerHTML = '❤️';
+
+heart.className = 'confetti';
+
+heart.style.left = '50%';
+
+heart.style.top = '50%';
+
+heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+
+document.body.appendChild(heart);
+
+
+
+const angle = Math.random() * Math.PI * 2;
+
+const velocity = Math.random() * 10 + 5;
+
+const dx = Math.cos(angle) * velocity;
+
+const dy = Math.sin(angle) * velocity;
+
+
+
+let posX = window.innerWidth / 2;
+
+let posY = window.innerHeight / 2;
+
+let opacity = 1;
+
+
+
+const move = setInterval(() => {
+
+posX += dx;
+
+posY += dy;
+
+opacity -= 0.02;
+
+heart.style.left = posX + 'px';
+
+heart.style.top = posY + 'px';
+
+heart.style.opacity = opacity;
+
+if(opacity <= 0) {
+
+clearInterval(move);
+
+heart.remove();
+
+}
+
+}, 20);
+
+}
+
+}
+
+
+
+function openBook() {
+
+const book = document.getElementById('myBook');
+
+if(!book.classList.contains('open')) {
+
+book.classList.add('open');
+
+createConfetti();
+
+if (!typingStarted) {
+
+typingStarted = true;
+
+setTimeout(() => {
+
+typeWriter(fullMessage, 0);
+
+}, 1000);
+
+}
+
+} else {
+
+book.classList.remove('open');
+
+}
+
+}
+
+
+
+function typeWriter(text, i) {
+
+if (i < text.length) {
+
+document.getElementById("typing-text").innerHTML = text.substring(0, i + 1);
+
+setTimeout(() => typeWriter(text, i + 1), 50);
+
+}
+
+}
+
+
+
+// Sao nền lung linh
+
+const canvas = document.getElementById('bgCanvas');
+
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+
+function initStars() {
+
+canvas.width = window.innerWidth;
+
+canvas.height = window.innerHeight;
+
+stars = [];
+
+for(let i=0; i<100; i++) stars.push({
+
+x: Math.random()*canvas.width,
+
+y: Math.random()*canvas.height,
+
+s: Math.random()*2,
+
+o: Math.random(),
+
+v: Math.random() * 0.5
+
+});
+
+}
+
+function drawStars() {
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+stars.forEach(s => {
+
+ctx.fillStyle = `rgba(255, 255, 255, ${s.o})`;
+
+ctx.beginPath(); ctx.arc(s.x, s.y, s.s, 0, Math.PI*2); ctx.fill();
+
+s.y += s.v; if(s.y > canvas.height) s.y = 0;
+
+});
+
+requestAnimationFrame(drawStars);
+
+}
+
+window.onload = () => { initStars(); drawStars(); };
+
+window.onresize = initStars;
+
+</script>
+
 </body>
+
 </html>
+
